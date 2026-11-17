@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swarm AI</title>
+    <meta name="description" content="A swarm of AI-agent cursors that moves like a starling murmuration. HTML, CSS and Canvas 2D.">
+  </head>
+  <body>
+
+    <canvas id="sky" aria-hidden="true"></canvas>
+
+    <!-- The coloured circle: an arc under the hero, then the sphere in About -->
+    <div class="orb" aria-hidden="true"><i></i></div>
+    
+    <header class="nav">
+      <!-- Logo: a ring of cursors, one per palette colour, all pointing at the centre -->
+      <a class="logo" href="#top" aria-label="Swarm home">
+        <svg viewBox="-18 -18 36 36" aria-hidden="true">
+          <path class="blue" transform="rotate(0) translate(11.5 0) rotate(180) scale(0.62)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+          <path class="mint" transform="rotate(60) translate(11.5 0) rotate(180) scale(0.62)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+          <path class="green" transform="rotate(120) translate(11.5 0) rotate(180) scale(0.62)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+          <path class="yellow" transform="rotate(180) translate(11.5 0) rotate(180) scale(0.62)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+          <path class="red" transform="rotate(240) translate(11.5 0) rotate(180) scale(0.62)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+          <path class="pink" transform="rotate(300) translate(11.5 0) rotate(180) scale(0.62)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+        </svg>
+      </a>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#demo">Demo</a>
+        <a class="cta" href="#demo">Get access</a>
+      </nav>
+    </header>
+    
+    <main id="top">
+      <section class="hero">
+        <!-- The word itself is drawn on the canvas, so agents can lift squares out of it -->
+        <h1 class="sr-only">Swarm</h1>
+        <p class="tagline">A swarm of AI agents.<br />One team that moves as one.</p>
+      </section>
+    
+      <!-- About: tall, so its one screen stays pinned while you scroll through it -->
+      <section class="about" id="about">
+        <div class="about-pin">
+          <!-- The script lays this text out around the sphere -->
+          <p class="lead">Swarm is a workforce of AI agents that plan, build, test and ship together. Every agent takes a role, from product manager to site reliability engineer, and picks up work the moment it appears. No tickets waiting in a queue. No handoffs lost between teams. No one blocked on anyone else. You set a direction and the swarm is already heading there, each agent adjusting to the ones around it. You point. They move as one.</p>
+        </div>
+      </section>
+    
+      <!-- Demo: a dotted board; the pill nav switches between its three views -->
+      <section class="demo" id="demo">
+        <div class="board is-hive">
+          <!-- Hive: step through the tiers of the agent hierarchy -->
+          <div class="stepper" role="group" aria-label="Hive tier">
+            <div class="steps">
+              <button type="button" class="step-prev" aria-label="Previous tier">&#8249;</button>
+              <button type="button" data-stage="0">5</button>
+              <button type="button" data-stage="1">15</button>
+              <button type="button" data-stage="2">50</button>
+              <button type="button" data-stage="3">150</button>
+              <button type="button" data-stage="4">500</button>
+              <button type="button" class="step-next" aria-label="Next tier">&#8250;</button>
+            </div>
+            <p class="step-caption" aria-live="polite"></p>
+          </div>
+    
+          <!-- The centre node; the script keeps it centred and scales it with the zoom -->
+          <div class="nodes">
+            <div class="node node-core">
+              <strong><i></i>Hive</strong>
+              <span>Five core agents take your goal and split it into work. Each tier hands tasks down to the next and reports results back up.</span>
+            </div>
+          </div>
+    
+          <!-- Social and Memory: a short note at the top of the board -->
+          <p class="view-note"></p>
+        </div>
+        <div class="pill" role="tablist" aria-label="Demo views">
+          <button type="button" role="tab" data-view="hive" aria-selected="true">Hive</button>
+          <button type="button" role="tab" data-view="social" aria-selected="false">Social</button>
+          <button type="button" role="tab" data-view="memory" aria-selected="false">Memory</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
