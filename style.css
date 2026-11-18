@@ -1,9 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 
 :root {
-  --paper: #ffffff;
-  --ink: #0d0d0d;
+  /* Light theme. The dark theme below swaps these; the canvas reads them too (js/theme.js) */
+  color-scheme: light;
+  --paper: #ffffff; /* page and cards */
+  --ink: #0d0d0d; /* text and solid black */
   --muted: #6b6b6b;
+  --board: #f3f3f1; /* the dotted board */
+  --dots: #c4c4c0;
+  --line: #deded9; /* card borders */
+  --soft: #ececea; /* hovers, tracks and dividers */
+  --wire: #bdbdb8; /* faint wires in Pricing */
+  --shade: 13, 13, 13; /* shadow colour, as r, g, b */
   --blue: #4f6df5;
   --green: #6fdc3c;
   --red: #ef5350;
@@ -22,6 +30,35 @@
   );
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark theme: follows the device, unless ?theme= forced one (js/theme.js) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #111110;
+    --ink: #f2f2ee;
+    --muted: #9b9b96;
+    --board: #191918;
+    --dots: #3b3b38;
+    --line: #2f2f2d;
+    --soft: #272725;
+    --wire: #57574f;
+    --shade: 0, 0, 0;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #111110;
+  --ink: #f2f2ee;
+  --muted: #9b9b96;
+  --board: #191918;
+  --dots: #3b3b38;
+  --line: #2f2f2d;
+  --soft: #272725;
+  --wire: #57574f;
+  --shade: 0, 0, 0;
 }
 
 * {
@@ -182,7 +219,7 @@ body {
   border-radius: 50%;
   background:
     radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 46%),
-    radial-gradient(circle at 62% 70%, rgba(13, 13, 13, 0) 45%, rgba(13, 13, 13, 0.22) 100%);
+    radial-gradient(circle at 62% 70%, rgba(13, 13, 13, 0) 45%, rgba(var(--shade), 0.22) 100%);
   opacity: var(--shade, 0);
 }
 
@@ -194,7 +231,7 @@ body {
 
 /* --- About ------------------------------------------------------------------ */
 .about {
-  height: 210vh; /* one pinned screen plus the scroll it stays pinned for */
+  height: 125vh; /* one pinned screen plus a short hold once the sphere settles */
 }
 
 .about-pin {
@@ -222,17 +259,23 @@ body {
 }
 
 /* --- Demo ------------------------------------------------------------------- */
+/* One dotted board under both Demo and Pricing */
+.board-bg {
+  position: relative;
+  z-index: 3;
+  background-color: var(--board);
+  background-image: radial-gradient(circle, var(--dots) 1.2px, transparent 1.6px);
+  background-size: 24px 24px;
+  background-position: 12px 12px;
+}
+
 .demo {
   position: relative;
   z-index: 3;
-  min-height: 100vh;
+  /* never shorter than Memory and Hive need, even on a short window */
+  min-height: max(100vh, 760px);
   display: flex;
   flex-direction: column;
-  background-color: #f3f3f1;
-  /* board dots */
-  background-image: radial-gradient(circle, #c4c4c0 1.2px, transparent 1.6px);
-  background-size: 24px 24px;
-  background-position: 12px 12px;
 }
 
 .board {
@@ -242,52 +285,30 @@ body {
   overflow: hidden;
 }
 
-/* Hive stepper: pick a tier, or move one at a time */
-.stepper {
-  position: absolute;
-  top: 18px;
-  left: 0;
-  right: 0;
-  z-index: 12; /* above the canvas, so the buttons are never covered */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  transition: opacity 0.3s ease;
-}
-
-.board:not(.is-hive) .stepper {
-  opacity: 0;
-  pointer-events: none;
-}
-
+/* Hive stepper: the bottom row of Hive's centre card */
 .steps {
+  margin: 12px -6px -6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--soft);
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 2px;
-  padding: 4px;
-  border-radius: 10px;
-  background: var(--paper);
-  box-shadow: 0 1px 2px rgba(13, 13, 13, 0.08), 0 4px 14px rgba(13, 13, 13, 0.08);
 }
 
 .steps button {
-  min-width: 34px;
-  padding: 7px 9px;
+  min-width: 30px;
+  padding: 7px 8px;
   border: 0;
   border-radius: 7px;
   background: transparent;
   color: var(--ink);
-  font: 500 12px/1 var(--mono);
+  font: 500 16px/1 var(--sans);
   cursor: pointer;
 }
 
 .steps button:hover:not(:disabled) {
-  background: #ececea;
-}
-
-.steps button[aria-pressed="true"] {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--soft);
 }
 
 .steps button:disabled {
@@ -300,42 +321,31 @@ body {
   outline-offset: 1px;
 }
 
+/* the cards ignore the pointer so the board stays interactive; the stepper doesn't */
+.node .steps {
+  pointer-events: auto;
+}
+
 .step-caption {
+  flex: 1;
   margin: 0;
-  font: 500 11px/1 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
+  white-space: nowrap;
+  font: 500 13px/1 var(--sans);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--ink);
 }
 
-/* A short explanation shown at the top of the board for Social */
-.view-note {
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  z-index: 12;
-  width: min(600px, calc(100% - 32px));
-  margin: 0;
-  padding: 10px 14px 11px;
-  transform: translateX(-50%);
-  border: 1px solid #deded9;
-  border-radius: 10px;
-  background: var(--paper);
-  box-shadow: 0 1px 2px rgba(13, 13, 13, 0.06), 0 6px 18px rgba(13, 13, 13, 0.07);
-  font-size: 12.5px;
-  line-height: 1.4;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.view-note strong {
-  margin-right: 4px;
-  font-weight: 600;
-}
-
-.board.has-note .view-note {
-  opacity: 1;
+/* Short screens: the pill would fall below the fold, so the script places it
+   just under the centre card instead */
+@media (max-height: 759px), (max-width: 600px) and (max-height: 859px) {
+  .pill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    margin: 0;
+  }
 }
 
 /* The centre node card, placed and scaled by the script */
@@ -345,10 +355,10 @@ body {
   top: 0;
   width: 164px;
   padding: 10px 12px 11px;
-  border: 1px solid #deded9;
+  border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--paper);
-  box-shadow: 0 1px 2px rgba(13, 13, 13, 0.06), 0 6px 18px rgba(13, 13, 13, 0.07);
+  box-shadow: 0 1px 2px rgba(var(--shade), 0.06), 0 6px 18px rgba(var(--shade), 0.07);
   opacity: 0;
   pointer-events: none;
   will-change: transform, opacity;
@@ -358,7 +368,7 @@ body {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
@@ -378,18 +388,81 @@ body {
   color: var(--muted);
 }
 
-.node-core {
+.node-core,
+.node-social {
   width: 232px;
   padding: 14px 16px 15px;
 }
 
-.node-core strong {
-  font-size: 15px;
+.node-core strong,
+.node-social strong {
+  font-size: 22.5px;
+  gap: 9px;
 }
 
-.node-core span {
+.node-core span,
+.node-social span,
+.node-meter span {
   font-size: 12.5px;
   color: var(--ink);
+}
+
+.node b {
+  font-weight: inherit;
+}
+
+/* Memory's meter: a few live figures, each with a thin bar */
+.node-meter {
+  width: 248px;
+  padding: 14px 16px 15px;
+}
+
+.node-meter strong {
+  font-size: 22.5px;
+}
+
+.meter {
+  margin: 12px 0 0;
+  display: grid;
+  gap: 9px;
+}
+
+.meter-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 10px;
+  font-size: 11.5px;
+}
+
+.meter dt {
+  color: var(--muted);
+}
+
+.meter dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar {
+  grid-column: 1 / -1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--soft);
+  overflow: hidden;
+}
+
+.bar u {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  background: var(--c, var(--ink));
+}
+
+/* System 1 / System 2: the bar's two parts in two shades */
+.bar-split {
+  background: color-mix(in srgb, var(--c, var(--ink)) 30%, var(--soft));
 }
 
 @media (max-width: 600px) {
@@ -397,15 +470,18 @@ body {
     width: 138px;
   }
 
-  .node-core {
+  .node-core,
+  .node-social {
     width: 200px;
+  }
+
+  .node-meter {
+    width: 240px;
   }
 }
 
-/* Pill nav: stays at the bottom of the screen while Demo is in view */
+/* Pill nav: at the bottom of the Demo section */
 .pill {
-  position: sticky;
-  bottom: 24px;
   align-self: center;
   margin: 0 0 24px;
   padding: 5px;
@@ -413,7 +489,7 @@ body {
   gap: 2px;
   border-radius: 999px;
   background: var(--paper);
-  box-shadow: 0 1px 2px rgba(13, 13, 13, 0.08), 0 8px 28px rgba(13, 13, 13, 0.12);
+  box-shadow: 0 1px 2px rgba(var(--shade), 0.08), 0 8px 28px rgba(var(--shade), 0.12);
 }
 
 .pill button {
@@ -427,7 +503,7 @@ body {
 }
 
 .pill button:hover {
-  background: #ececea;
+  background: var(--soft);
 }
 
 .pill button[aria-selected="true"] {
@@ -440,8 +516,406 @@ body {
   outline-offset: 2px;
 }
 
+/* --- Pricing ------------------------------------------------------------------ */
+/* A node graph: plan nodes around a centre card. The script draws the wires and
+   cursors on the canvas, reading where these elements are. */
+.pricing {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 16px 96px;
+}
+
+.graph {
+  width: min(1080px, 100%);
+  display: grid;
+  /* side columns never squeeze a plan node below its full width */
+  grid-template-columns: minmax(232px, 1fr) minmax(280px, 340px) minmax(232px, 1fr);
+  grid-template-areas:
+    "fast . far"
+    ". hub ."
+    ". forever .";
+  gap: 40px 64px;
+  align-items: center;
+}
+
+.plan-node,
+.plan-hub {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgba(var(--shade), 0.06), 0 6px 18px rgba(var(--shade), 0.07);
+  color: var(--ink);
+}
+
+.plan-node {
+  width: 232px;
+  padding: 12px 14px 13px;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  position: relative;
+  /* dragged by the script. A vertical swipe still scrolls the page on touch
+     screens, so a finger drags a card sideways; a mouse drags it anywhere */
+  translate: var(--dx, 0) var(--dy, 0);
+  touch-action: pan-y pinch-zoom;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, translate 0.4s ease;
+}
+
+/* over another card: it'll slide back if dropped here */
+.plan-node.is-blocked {
+  opacity: 0.55;
+}
+
+.plan-node.is-dragging {
+  z-index: 2;
+  cursor: grabbing;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.plan-node:hover {
+  transform: translateY(-2px);
+}
+
+.plan-node:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.plan-node[aria-pressed="true"] {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink), 0 6px 18px rgba(var(--shade), 0.1);
+}
+
+/* the two paid plans share a row; match their heights */
+.plan-node[data-plan="fast"],
+.plan-node[data-plan="far"] {
+  align-self: stretch;
+  align-content: start;
+}
+
+.plan-node[data-plan="fast"] {
+  grid-area: fast;
+  justify-self: end;
+}
+
+.plan-node[data-plan="far"] {
+  grid-area: far;
+  justify-self: start;
+}
+
+.plan-node[data-plan="forever"] {
+  grid-area: forever;
+  justify-self: center;
+}
+
+.plan-node strong,
+.hub-layer strong {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 22.5px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Each plan's version of the logo, in place of a dot */
+.plan-node .mark,
+.hub-layer .mark {
+  flex: none;
+  width: 26px;
+  height: 26px;
+}
+
+.mark path {
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.plan-price {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.plan-price b {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.plan-terms {
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.plan-tag {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.plan-hub {
+  grid-area: hub;
+  padding: 16px 18px 18px;
+}
+
+/* Old and new copy share one cell while the cursors wipe between them */
+.hub-body {
+  display: grid;
+}
+
+.hub-layer {
+  grid-area: 1 / 1;
+  align-self: start;
+}
+
+/* Word pieces show once placed; a bullet or dot shows with its first word */
+.hub-layer .w:not(.on),
+.hub-layer strong:not(:has(.w.on)) .mark,
+.hub-layer li:not(:has(.w.on))::before {
+  visibility: hidden;
+}
+
+.hub-layer p {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.hub-layer .hub-prompt {
+  color: var(--muted);
+}
+
+/* The plan's pricing, step by step */
+.hub-schedule {
+  margin: 12px 0 0;
+  padding: 10px 0;
+  border-top: 1px solid var(--soft);
+  border-bottom: 1px solid var(--soft);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px 16px;
+  font-size: 13px;
+}
+
+/* Its dividers belong to one layer at a time: the old copy's go as soon as a
+   swap starts, the new copy's fade in once every word is in place */
+.hub-schedule {
+  transition: border-color 0.4s ease;
+}
+
+.hub-layer[aria-hidden] .hub-schedule,
+.hub-layer.is-settling .hub-schedule {
+  border-color: transparent;
+  transition: none;
+}
+
+.hub-schedule dt {
+  color: var(--muted);
+}
+
+.hub-schedule dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hub-layer ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 5px;
+  font-size: 13px;
+}
+
+.hub-layer li::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 8px 1px 0;
+  background: var(--ink);
+}
+
+.hub-cta {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* Too narrow for three columns: the two paid plans above the card, Go forever
+   below, all three the same width */
+@media (max-width: 920px) {
+  .graph {
+    width: min(620px, 100%);
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "fast far"
+      "hub hub"
+      "forever forever";
+    gap: 48px 12px;
+  }
+
+  .plan-node[data-plan] {
+    width: min(232px, 100%);
+  }
+
+  .plan-node[data-plan="forever"] {
+    width: min(232px, calc((100% - 12px) / 2));
+  }
+}
+
+/* --- Closing ------------------------------------------------------------------ */
+/* The mission, centred on the plain page, under the logo */
+.closing {
+  position: relative;
+  z-index: 3;
+  background: var(--paper);
+  padding: 140px 6vw 48px;
+  text-align: center;
+}
+
+.closing-mark {
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 36px;
+  overflow: visible;
+}
+
+.closing-mark path {
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+/* One cursor pushes into the ring, the ring gives a little, then it all turns */
+.closing.is-in .closing-mark {
+  animation: mark-spin 30s linear 2s infinite;
+}
+
+.closing.is-in .closing-mark .slot {
+  animation: mark-give 0.7s ease-out 1.05s both;
+}
+
+.closing.is-in .closing-mark .slot-in {
+  animation: mark-push 1.6s cubic-bezier(0.3, 0.5, 0.25, 1) 0.2s both;
+}
+
+.closing:not(.is-in) .closing-mark .slot-in {
+  opacity: 0;
+}
+
+@keyframes mark-push {
+  0% { transform: translateX(60px); opacity: 0; }
+  25% { opacity: 1; }
+  70% { transform: translateX(-2.5px); }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes mark-give {
+  0% { transform: translateX(0); }
+  35% { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes mark-spin {
+  to { transform: rotate(360deg); }
+}
+
+.closing-copy {
+  max-width: 980px;
+  margin: 0 auto;
+  font-size: clamp(26px, 3.6vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+/* The proverb, one clause per line, set smaller above the statement */
+.closing-proverb {
+  margin: 0 auto 32px;
+  font-family: Fraunces, Georgia, "Times New Roman", serif;
+  font-size: 22.5px; /* the same as the node titles */
+  line-height: 1.35;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.closing-proverb span {
+  display: block;
+  text-wrap: balance;
+}
+
+.closing-actions {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.closing-cta {
+  display: inline-block;
+  padding: 13px 24px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.closing-cta-alt {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+
+.closing-cta:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.closing-note {
+  max-width: 520px;
+  margin: 120px auto 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .demo {
+    min-height: max(100vh, 860px); /* Memory stacks its cores above and below the meter */
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .orb i {
+  .orb i,
+  .closing.is-in .closing-mark,
+  .closing.is-in .closing-mark .slot,
+  .closing.is-in .closing-mark .slot-in {
     animation: none;
+  }
+
+  .closing:not(.is-in) .closing-mark .slot-in {
+    opacity: 1;
   }
 }

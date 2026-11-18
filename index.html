@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap">
     <link rel="stylesheet" href="./style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swarm AI</title>
@@ -29,7 +32,8 @@
       <nav>
         <a href="#about">About</a>
         <a href="#demo">Demo</a>
-        <a class="cta" href="#demo">Get access</a>
+        <a href="#pricing">Pricing</a>
+        <a class="cta" href="#pricing">Get access</a>
       </nav>
     </header>
     
@@ -49,32 +53,46 @@
       </section>
     
       <!-- Demo: a dotted board; the pill nav switches between its three views -->
+      <!-- Demo and Pricing share one dotted board -->
+      <div class="board-bg">
       <section class="demo" id="demo">
-        <div class="board is-hive">
-          <!-- Hive: step through the tiers of the agent hierarchy -->
-          <div class="stepper" role="group" aria-label="Hive tier">
-            <div class="steps">
-              <button type="button" class="step-prev" aria-label="Previous tier">&#8249;</button>
-              <button type="button" data-stage="0">5</button>
-              <button type="button" data-stage="1">15</button>
-              <button type="button" data-stage="2">50</button>
-              <button type="button" data-stage="3">150</button>
-              <button type="button" data-stage="4">500</button>
-              <button type="button" class="step-next" aria-label="Next tier">&#8250;</button>
-            </div>
-            <p class="step-caption" aria-live="polite"></p>
-          </div>
-    
-          <!-- The centre node; the script keeps it centred and scales it with the zoom -->
+        <div class="board">
+          <!-- Centre cards, placed by the script. Hive's card steps through the
+               agent layers; Memory's meter follows the drones. -->
           <div class="nodes">
             <div class="node node-core">
-              <strong><i></i>Hive</strong>
-              <span>Five core agents take your goal and split it into work. Each tier hands tasks down to the next and reports results back up.</span>
+              <strong><i></i><b class="node-title"></b></strong>
+              <span class="node-copy"></span>
+              <div class="steps" role="group" aria-label="Hive agent layer">
+                <button type="button" class="step-prev" aria-label="Previous agent layer">&#8249;</button>
+                <p class="step-caption" aria-live="polite"></p>
+                <button type="button" class="step-next" aria-label="Next agent layer">&#8250;</button>
+              </div>
+            </div>
+            <div class="node node-social">
+              <strong><b class="node-title"></b></strong>
+              <span class="node-copy"></span>
+            </div>
+            <div class="node node-meter">
+              <strong><i></i><b class="node-title"></b></strong>
+              <span class="node-copy"></span>
+              <dl class="meter">
+                <div class="meter-row" data-metric="bloat">
+                  <dt>Token bloat</dt><dd></dd>
+                  <div class="bar"><u></u></div>
+                </div>
+                <div class="meter-row" data-metric="context">
+                  <dt>Context window</dt><dd></dd>
+                  <div class="bar"><u></u></div>
+                </div>
+                <div class="meter-row" data-metric="system">
+                  <dt>System 1 / System 2</dt><dd></dd>
+                  <div class="bar bar-split"><u></u></div>
+                </div>
+              </dl>
             </div>
           </div>
     
-          <!-- Social and Memory: a short note at the top of the board -->
-          <p class="view-note"></p>
         </div>
         <div class="pill" role="tablist" aria-label="Demo views">
           <button type="button" role="tab" data-view="hive" aria-selected="true">Hive</button>
@@ -82,8 +100,49 @@
           <button type="button" role="tab" data-view="memory" aria-selected="false">Memory</button>
         </div>
       </section>
+
+      <!-- Pricing: a node graph. The script fills in the plans from config.js,
+           wires them to the centre card and rewrites it when one is picked. -->
+      <section class="pricing" id="pricing">
+        <h2 class="sr-only">Pricing</h2>
+        <div class="graph">
+          <div class="plan-hub">
+            <div class="hub-body"></div>
+          </div>
+        </div>
+      </section>
+      </div>
+
+      <!-- Closing: the mission on the plain page. The logo's last cursor pushes
+           into the ring when it scrolls into view, then the ring slowly turns. -->
+      <footer class="closing" id="mission">
+        <svg class="closing-mark" viewBox="-18 -18 36 36" aria-hidden="true">
+          <g transform="rotate(0)"><g class="slot"><path transform="translate(11.5 0) rotate(180) scale(0.62)" style="fill: var(--blue); stroke: var(--blue)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" /></g></g>
+          <g transform="rotate(60)"><g class="slot"><path transform="translate(11.5 0) rotate(180) scale(0.62)" style="fill: var(--mint); stroke: var(--mint)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" /></g></g>
+          <g transform="rotate(120)"><g class="slot"><path transform="translate(11.5 0) rotate(180) scale(0.62)" style="fill: var(--green); stroke: var(--green)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" /></g></g>
+          <g transform="rotate(180)"><g class="slot slot-in"><path transform="translate(11.5 0) rotate(180) scale(0.62)" style="fill: var(--yellow); stroke: var(--yellow)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" /></g></g>
+          <g transform="rotate(240)"><g class="slot"><path transform="translate(11.5 0) rotate(180) scale(0.62)" style="fill: var(--red); stroke: var(--red)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" /></g></g>
+          <g transform="rotate(300)"><g class="slot"><path transform="translate(11.5 0) rotate(180) scale(0.62)" style="fill: var(--pink); stroke: var(--pink)" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" /></g></g>
+        </svg>
+        <p class="closing-proverb">
+          <span>If you want to go fast, go alone.</span>
+          <span>If you want to go far, go together.</span>
+          <span>If you want to go forever, go swarm.</span>
+        </p>
+        <p class="closing-copy">
+          Every great company started as a few people with too much to do. Swarm gives them the team they can't hire yet, so the work gets done and the people doing it get to go fast, go far, and keep going.
+        </p>
+        <div class="closing-actions">
+          <a class="closing-cta" href="#pricing">Get access</a>
+          <!-- Careers: no page yet; swap in its URL -->
+          <a class="closing-cta closing-cta-alt" href="#">Join the team</a>
+        </div>
+        <p class="closing-note">
+          Swarm is a fictional company: a thought and design experiment about what working alongside a swarm of AI agents could feel like. No product, plans or prices here are real.
+        </p>
+      </footer>
     </main>
 
-    <script src="./script.js"></script>
+    <script type="module" src="./js/main.js"></script>
   </body>
 </html>
