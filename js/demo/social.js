@@ -5,6 +5,7 @@
 // path to its new slot while the rings keep turning.
 
 import { HIVE, SOCIAL } from "../config.js";
+import { keepLastWords } from "../text.js";
 import { stage, ctx } from "../stage.js";
 import { stamp } from "../sprites.js";
 import { board, clipOut, showCard } from "./board.js";
@@ -12,7 +13,7 @@ import { ringAngle, ringRadius, arrowScale } from "./hive.js";
 
 const card = document.querySelector(".node-social");
 card.querySelector(".node-title").textContent = SOCIAL.title;
-card.querySelector(".node-copy").textContent = SOCIAL.copy;
+card.querySelector(".node-copy").textContent = keepLastWords(SOCIAL.copy);
 
 const SN = HIVE.tiers.reduce((sum, t) => sum + t.count, 0);
 const soTier = new Uint8Array(SN); // the slot the agent is in, or heading for

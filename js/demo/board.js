@@ -75,14 +75,16 @@ export function placePill(dt) {
     "translate(" + (c.left + c.width / 2 - d.left).toFixed(1) + "px," + pillY.toFixed(1) + "px) translate(-50%, 0)";
 }
 
-// Keep drawing off a centre card, so the card covers whatever is behind it.
-// Call ctx.restore() when done.
-export function clipOut(el) {
-  const r = el.getBoundingClientRect();
+// Keep drawing off the given cards and the pill nav, so they cover whatever
+// is behind them (the canvas sits above the page). Call ctx.restore() when done.
+export function clipOut(...els) {
   ctx.save();
   ctx.setTransform(stage.dpr, 0, 0, stage.dpr, 0, 0);
   ctx.beginPath();
   ctx.rect(0, 0, stage.width, stage.height);
-  ctx.roundRect(r.left, r.top, r.width, r.height, 10);
+  for (const el of [...els, pillEl]) {
+    const r = el.getBoundingClientRect();
+    if (r.width) ctx.roundRect(r.left, r.top, r.width, r.height, el === pillEl ? r.height / 2 : 10);
+  }
   ctx.clip("evenodd");
 }

@@ -13,8 +13,9 @@ hub.append(status);
 
 // Append text as one piece per word
 function words(parent, text) {
-  text.split(/\s+/).filter(Boolean).forEach((word, n) => {
-    if (n) parent.append(" ");
+  const all = text.split(/\s+/).filter(Boolean);
+  all.forEach((word, n) => {
+    if (n) parent.append(n === all.length - 1 ? "\u00a0" : " "); // no orphaned last word
     parent.append(el("span", "w", word));
   });
   return parent;

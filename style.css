@@ -87,6 +87,16 @@ body {
   pointer-events: none;
 }
 
+/* No orphaned last words in running copy */
+p,
+li,
+dd,
+.node-copy,
+.plan-tag,
+.plan-terms {
+  text-wrap: pretty;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

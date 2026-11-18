@@ -2,6 +2,7 @@
 // Each step pulls the view back and fades in the next, larger ring with its cards.
 
 import { CONFIG, HIVE } from "../config.js";
+import { keepLastWords } from "../text.js";
 import { stage, ctx } from "../stage.js";
 import { stamp, pillStyle, pill } from "../sprites.js";
 import { board, clipOut, showCard } from "./board.js";
@@ -66,7 +67,7 @@ function setHiveStage(n) {
   stepCaption.textContent = "Agent layer " + (hiveStage + 1) + " of " + HIVE.tiers.length;
   coreCard.style.setProperty("--c", CONFIG.palette[tier.color]);
   cardTitle.textContent = tier.title;
-  cardCopy.textContent = tier.copy;
+  cardCopy.textContent = keepLastWords(tier.copy);
 }
 
 stepPrev.addEventListener("click", () => setHiveStage(hiveStage - 1));

@@ -5,6 +5,7 @@
 // spinning shell (see flock.js), and the About copy is laid out around it.
 
 import { CONFIG } from "./config.js";
+import { keepLastWords } from "./text.js";
 import { stage } from "./stage.js";
 import { pointer } from "./pointer.js";
 
@@ -49,7 +50,7 @@ export function layoutCopy() {
 
   // Measure every word once at the stylesheet's size; widths scale with the type
   copyEl.style.fontSize = "";
-  const words = copyText.split(" ");
+  const words = keepLastWords(copyText).split(" "); // the last two words stay together
   copyEl.innerHTML = words.map((w) => "<span>" + w + "</span>").join("") + "<span>&nbsp;</span>";
   const style = getComputedStyle(copyEl);
   const baseSize = parseFloat(style.fontSize);

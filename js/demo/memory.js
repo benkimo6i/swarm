@@ -6,11 +6,12 @@
 // hovering a core shows which agents depend on it and that core's figures.
 
 import { CONFIG, MEMORY } from "../config.js";
+import { keepLastWords } from "../text.js";
 import { theme } from "../theme.js";
 import { stage, ctx } from "../stage.js";
 import { pointer } from "../pointer.js";
 import { stamp } from "../sprites.js";
-import { board, showCard, pillRoom } from "./board.js";
+import { board, showCard, pillRoom, clipOut } from "./board.js";
 
 const SANS = "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif";
 const MC = MEMORY.cores.length;
@@ -74,7 +75,7 @@ const totalTokens = MEMORY.cores.reduce((sum, core) => sum + core.tokens, 0);
 const fmtTokens = (n) => (n >= 1000 ? (n / 1000).toFixed(n % 1000 ? 1 : 0) + "k" : String(Math.round(n)));
 const meterCard = document.querySelector(".node-meter");
 const meterTitle = meterCard.querySelector(".node-title");
-meterCard.querySelector(".node-copy").textContent = MEMORY.meterCopy;
+meterCard.querySelector(".node-copy").textContent = keepLastWords(MEMORY.meterCopy);
 const meterRows = {};
 for (const row of meterCard.querySelectorAll(".meter-row")) {
   meterRows[row.dataset.metric] = { value: row.querySelector("dd"), bar: row.querySelector(".bar u"), text: "" };
@@ -455,6 +456,7 @@ export function drawMemory() {
   // a hovered core's agents stay bright while the others fade back
   const fade = (c) => memoryShown * (1 - memDim * (1 - memFocus[c]) * 0.72);
 
+  clipOut(); // the pill nav covers whatever is behind it
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   // Hovered: a line from the core to every agent that depends on it
@@ -536,4 +538,5 @@ export function drawMemory() {
     ctx.setTransform(co, sn, -sn, co, x * dpr, y * dpr);
     stamp(MEMORY.coreColor);
   }
+  ctx.restore();
 }
