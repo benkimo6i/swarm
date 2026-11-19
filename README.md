@@ -40,6 +40,7 @@ No build step: the page loads `js/main.js` as an ES module, and that imports the
 | `js/pricing/swarm.js` | The plan's swarm: releasing it, its jobs, and its flow-field drift |
 | `js/closing.js` | Closing mission: starts the logo animation when it scrolls into view |
 | `js/theme.js` | Light/dark: follows the device (`?theme=dark` or `?theme=light` forces one) and gives the canvas the CSS colour tokens |
+| `assets/` | Favicon (`favicon.svg`), `apple-touch-icon.png`, and the 1200×630 share image `og.png`. `og.html` is the source for both PNGs; the command to regenerate them is at its top |
 
 ## Run locally
 

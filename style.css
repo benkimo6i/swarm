@@ -563,7 +563,8 @@ dd,
 .plan-node {
   width: 232px;
   padding: 12px 14px 13px;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 4px;
   text-align: left;
   font: inherit;
@@ -605,7 +606,6 @@ dd,
 .plan-node[data-plan="fast"],
 .plan-node[data-plan="far"] {
   align-self: stretch;
-  align-content: start;
 }
 
 .plan-node[data-plan="fast"] {
@@ -670,6 +670,28 @@ dd,
   font-size: 12.5px;
   line-height: 1.35;
   color: var(--muted);
+}
+
+/* The click prompt, pinned to the foot of the node so the paired cards line up */
+.plan-hint {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.plan-hint i {
+  font-style: normal;
+  transition: translate 0.2s ease;
+}
+
+.plan-node:hover .plan-hint i,
+.plan-node:focus-visible .plan-hint i {
+  translate: 3px 0;
 }
 
 .plan-hub {
@@ -909,6 +931,29 @@ dd,
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--muted);
+}
+
+/* The pricing footnotes (* and † in the plans), left-aligned above the note */
+.closing-notes {
+  max-width: 560px;
+  margin: 120px auto 0;
+  text-align: left;
+}
+
+.closing-notes .closing-note {
+  max-width: none;
+  margin: 0 0 12px;
+}
+
+.closing-notes + .closing-note {
+  margin-top: 36px;
+}
+
+.closing-note sup {
+  font-size: 1em;
+  vertical-align: baseline;
+  color: var(--ink);
+  margin-right: 2px;
 }
 
 @media (max-width: 600px) {

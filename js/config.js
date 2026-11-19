@@ -177,8 +177,10 @@ export const PRICING = {
     copy: "Big companies get whole teams of AI agents. We think everyone else should too. Swarm gives freelancers, founders, small teams and community groups a workforce that plans, builds and ships alongside them.",
     prompt: "Pick a plan to see how you'd fly."
   },
+  hint: "See details", // the prompt at the foot of every plan node
   // price and per: the big figure and what it covers. terms: the line under it.
   // schedule: the full pricing, listed on the centre card once the plan is picked.
+  // * and † point to the footnotes in the closing footer (index.html, #terms).
   plans: [
     {
       id: "fast",
@@ -186,18 +188,18 @@ export const PRICING = {
       cursorSize: 0.72,
       name: "Go fast",
       price: "$0",
-      per: "for 2 years",
+      per: "for 2 years*",
       terms: "then $15,000/mo, or 7% equity",
       tagline: "For solo builders, whether you're founding or freelancing",
       logo: "outline",
       copy: "Your own swarm, ready when you are. Whether you're founding something or freelancing as a specialist, hand off the busywork, keep the creative calls, and ship in an afternoon what used to take a sprint.",
       schedule: [
-        ["Years 1–2", "$0"],
+        ["Years 1–2", "$0*"],
         ["Year 3 on", "$15,000 / month"],
         ["Or instead", "7% equity"]
       ],
       includes: ["1 seat with a swarm of 50 agents", "Hive and Memory for every project", "Email support"],
-      cta: "Start with Go fast"
+      cta: "Apply for Go fast†"
     },
     {
       id: "far",
@@ -205,19 +207,19 @@ export const PRICING = {
       cursorSize: 0.5,
       name: "Go far",
       price: "$0",
-      per: "for 2 years",
+      per: "for 2 years*",
       terms: "then $68,000/mo, $240,000/mo from year 5, or 7% equity",
       tagline: "For startups and small teams",
       logo: "one-outline",
       copy: "One swarm for the whole team. Agents share memory across your projects, pick up work from anyone, and keep everyone moving in the same direction.",
       schedule: [
-        ["Years 1–2", "$0"],
+        ["Years 1–2", "$0*"],
         ["Years 3–4", "$68,000 / month"],
         ["Year 5 on", "$240,000 / month"],
         ["Or instead", "7% equity"]
       ],
       includes: ["A shared swarm of 500 agents", "Team memory across projects", "Priority support"],
-      cta: "Start with Go far"
+      cta: "Apply for Go far†"
     },
     {
       id: "forever",
@@ -225,14 +227,14 @@ export const PRICING = {
       cursorSize: 0.6,
       name: "Go forever",
       price: "$0",
-      per: "for eligible orgs",
+      per: "for work that does good",
       terms: "for as long as you qualify",
-      tagline: "For non-profits, schools and community groups",
+      tagline: "For research, non-profits and anyone building a better world",
       logo: "solid",
-      copy: "A lighter Go far for the people doing the long work. Non-profits, schools and community organizations get a shared team swarm at no cost, for as long as they're doing it.",
-      schedule: [["Always", "$0 for eligible orgs"]],
+      copy: "For the work that outlasts all of us. Whether you're chasing a cure in a research lab, building something that makes society fairer and safer, or showing up for your community, Go forever gives you a shared team swarm at no cost, for as long as the work is for good.",
+      schedule: [["Always", "$0 for work that does good"]],
       includes: ["A shared swarm of 150 agents", "Team memory across projects", "Onboarding with our team"],
-      cta: "Apply for Go forever"
+      cta: "Apply for Go forever†"
     }
   ],
   connectTime: 0.9, // seconds to lay the wire

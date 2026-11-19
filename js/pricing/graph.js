@@ -57,7 +57,10 @@ export const nodes = PRICING.plans.map((plan) => {
   title.append(logoMark(plan.logo), plan.name);
   const price = el("span", "plan-price");
   price.append(el("b", "", plan.price), " " + plan.per);
-  button.append(title, price, el("span", "plan-terms", keepLastWords(plan.terms)), el("span", "plan-tag", keepLastWords(plan.tagline)));
+  const hint = el("span", "plan-hint", PRICING.hint);
+  hint.append(el("i", "", "\u2192"));
+  hint.lastChild.setAttribute("aria-hidden", "true");
+  button.append(title, price, el("span", "plan-terms", keepLastWords(plan.terms)), el("span", "plan-tag", keepLastWords(plan.tagline)), hint);
   graph.append(button);
   return button;
 });

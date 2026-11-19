@@ -1,0 +1,58 @@
+<!doctype html>
+<!-- Source for og.png (1200x630) and apple-touch-icon.png. Regenerate with:
+     chrome --headless --hide-scrollbars --window-size=1200,630 --screenshot=assets/og.png assets/og.html
+     chrome --headless --hide-scrollbars --window-size=180,180 --screenshot=assets/apple-touch-icon.png "assets/og.html#icon" -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=block">
+<style>
+  html, body { margin: 0; background: #fff; color: #0d0d0d; }
+  body { width: 1200px; height: 630px; position: relative; overflow: hidden;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mark { position: absolute; left: 80px; top: 72px; width: 76px; height: 76px; }
+  .word { position: absolute; left: 70px; bottom: 200px; margin: 0; font: 260px/0.8 Anton, Impact, sans-serif; letter-spacing: 0.01em; }
+  .tag { position: absolute; left: 82px; bottom: 72px; margin: 0; font-size: 34px; line-height: 1.25; font-weight: 500; letter-spacing: -0.01em; }
+  .flock { position: absolute; inset: 0; }
+  /* the touch icon: just the ring, centred, with a little breathing room */
+  body.icon { width: 180px; height: 180px; }
+  body.icon > :not(.mark) { display: none; }
+  body.icon .mark { left: 22px; top: 22px; width: 136px; height: 136px; }
+</style>
+</head>
+<body>
+<svg class="flock" viewBox="0 0 1200 630"></svg>
+<svg class="mark" viewBox="-18 -18 36 36" stroke-width="3" stroke-linejoin="round"></svg>
+<p class="word">SWARM</p>
+<p class="tag">A swarm of AI agents.<br>One team that moves as one.</p>
+<script>
+  if (location.hash === "#icon") document.body.className = "icon";
+  const cols = ["#4f6df5", "#7fe8cf", "#6fdc3c", "#f7df4b", "#ef5350", "#e254e8"];
+  const arrow = "M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z";
+  const ns = "http://www.w3.org/2000/svg";
+  const add = (svg, t, c, extra) => {
+    const p = document.createElementNS(ns, "path");
+    p.setAttribute("d", arrow); p.setAttribute("transform", t);
+    p.setAttribute("fill", c); p.setAttribute("stroke", c);
+    if (extra) for (const k in extra) p.setAttribute(k, extra[k]);
+    svg.append(p);
+  };
+  const mark = document.querySelector(".mark");
+  cols.forEach((c, i) => add(mark, `rotate(${i * 60}) translate(11.5 0) rotate(180) scale(0.62)`, c));
+  // a ribbon of cursors sweeping across the right side, like the hero's flock
+  let s = 7;
+  const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  const flock = document.querySelector(".flock");
+  for (let i = 0; i < 170; i++) {
+    const u = i / 170;
+    const x = 870 + u * 400 - 50 * Math.sin(u * 5);
+    const y = 300 + 190 * Math.sin(u * 4.2 + 1.2) - u * 120;
+    const spread = 34 + 26 * Math.sin(u * 7);
+    const px = x + (rnd() - 0.5) * spread * 2.2, py = y + (rnd() - 0.5) * spread * 2;
+    const dir = Math.atan2(190 * 4.2 * Math.cos(u * 4.2 + 1.2) - 120, 400 - 250 * Math.cos(u * 5)) * 180 / Math.PI + (rnd() - 0.5) * 30;
+    add(flock, `translate(${px.toFixed(1)} ${py.toFixed(1)}) rotate(${dir.toFixed(1)}) scale(${(0.55 + rnd() * 0.35).toFixed(2)})`,
+      cols[Math.floor(rnd() * 6)], { "stroke-width": 3, "stroke-linejoin": "round" });
+  }
+</script>
+</body>
+</html>

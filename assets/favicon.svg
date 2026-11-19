@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -18 36 36" stroke-width="3" stroke-linejoin="round">
+  <path transform="rotate(0) translate(11.5 0) rotate(180) scale(0.62)" fill="#4f6df5" stroke="#4f6df5" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+  <path transform="rotate(60) translate(11.5 0) rotate(180) scale(0.62)" fill="#7fe8cf" stroke="#7fe8cf" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+  <path transform="rotate(120) translate(11.5 0) rotate(180) scale(0.62)" fill="#6fdc3c" stroke="#6fdc3c" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+  <path transform="rotate(180) translate(11.5 0) rotate(180) scale(0.62)" fill="#f7df4b" stroke="#f7df4b" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+  <path transform="rotate(240) translate(11.5 0) rotate(180) scale(0.62)" fill="#ef5350" stroke="#ef5350" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+  <path transform="rotate(300) translate(11.5 0) rotate(180) scale(0.62)" fill="#e254e8" stroke="#e254e8" d="M8.5 0 L-8.5 -8 L-4.5 0 L-8.5 8 Z" />
+</svg>
