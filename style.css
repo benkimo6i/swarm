@@ -945,7 +945,7 @@ dd,
   margin: 0 0 12px;
 }
 
-.closing-notes + .closing-note {
+.closing-notes .closing-note:last-child {
   margin-top: 36px;
 }
 
